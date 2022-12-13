@@ -1,0 +1,17 @@
+<h1>Sign Up</h1>
+<form action="/signup" method="post" id="signup-form">
+  <label for="first_name">First Name</label>
+  <input type="first_name" name="first_name" />
+  <label for="last_name">Last Name</label>
+  <input type="last_name" name="Last_name" />
+  <label>Email:</label>
+  <input type="email" name="email" />
+  <label>Password:</label>
+  <input type="password" name="password" />
+  {{#if error}}
+    <p>{{error}}</p>
+  {{/if}}
+  <br />
+  <br />
+  <button type="submit">Signup</button>
+</form>

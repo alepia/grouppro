@@ -1,0 +1,35 @@
+{{! filters }}
+<div class="sep"></div>
+<div class="container-fluid filtcont">
+  <nav class="navbar navbar-dark">
+    <a href="" class="nav-link filt">Filters</a>
+  </nav>
+</div>
+{{! end }}
+<div class="container-fluid productscont">
+  <div class="row">
+    {{#each products}}
+      <div class="col-md-2 transition">
+        <a href="/sproduct"><img
+            src="{{this.imgSrc}}"
+            alt=""
+            class="prothumb"
+          /></a>
+        <h2
+          class="text-succes"
+          style="font-size:large; font=weight: 700;"
+        >{{this.name}}</h2>
+        <div
+          class="text-succes"
+          style="font-size:large; font=weight: 700;"
+        >${{this.price}}</div>
+        <div class="btn addbtn">
+          <span class="hide-cart"><i
+              class="fa-solid fa-cart-shopping nav-cart"
+            ></i></span>
+          Add to Cart</div>
+      </div>
+    {{/each}}
+  </div>
+</div>
+{{! Products display }}

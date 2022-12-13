@@ -1,0 +1,34 @@
+{{! Banner }}
+<div class="container-fluid banner">
+  <a href="/shop"><button class="banner-btn">Shop Now</button></a>
+</div>
+
+{{! Best sellers }}
+<div class="container best-seller">
+  <h1 class="bsh1">Best Sellers</h1>
+  <div class="row">
+    {{#each products}}
+      <div class="col-md">
+        <img src="{{this.imgSrc}}" alt="" class="thumb" />
+        <h2
+          class="text-success"
+          style="font-size:large; font=weight: 700;"
+        >{{this.name}}</h2>
+        <div
+          class="text-success"
+          style="font-size:large; font=weight: 700;"
+        >${{this.price}}</div>
+        <a href="" class="btn addbtn">
+          <span class="hide-cart"><i
+              class="fa-solid fa-cart-shopping nav-cart"
+            ></i></span>
+           Add to Cart</a>
+      </div>
+    {{/each}}
+  </div>
+</div>
+
+{{! Sales }}
+<div class="container-fluid sales-banner">
+  <a href="" class="btn btn-danger sales-btn">Shop Now</a>
+</div>
