@@ -9,18 +9,18 @@
 <div class="container-fluid productscont">
   <div class="row">
     {{#each products}}
-      <div class="col-md-2 transition">
+      <div class="col-lg-2 col-md-3 col-sm-1 transition">
         <a href="/sproduct"><img
-            src="{{this.imgSrc}}"
+            src="{{this.img_src}}"
             alt=""
-            class="prothumb"
+            class="prothumb item-image"
           /></a>
         <h2
-          class="text-succes"
+          class="text-succes item-title"
           style="font-size:large; font=weight: 700;"
         >{{this.name}}</h2>
         <div
-          class="text-succes"
+          class="text-succes item-price"
           style="font-size:large; font=weight: 700;"
         >${{this.price}}</div>
         <div class="btn addbtn">

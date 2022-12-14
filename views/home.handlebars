@@ -7,23 +7,25 @@
 <div class="container best-seller">
   <h1 class="bsh1">Best Sellers</h1>
   <div class="row">
-    {{#each products}}
-      <div class="col-md">
-        <img src="{{this.imgSrc}}" alt="" class="thumb" />
-        <h2
-          class="text-success"
-          style="font-size:large; font=weight: 700;"
-        >{{this.name}}</h2>
-        <div
-          class="text-success"
-          style="font-size:large; font=weight: 700;"
-        >${{this.price}}</div>
-        <a href="" class="btn addbtn">
-          <span class="hide-cart"><i
-              class="fa-solid fa-cart-shopping nav-cart"
-            ></i></span>
-           Add to Cart</a>
-      </div>
+    {{#each homepro}}
+      {{#if home}}
+        <div class="col-md">
+          <img src="{{this.img_src}}" alt="" class="thumb item-image" />
+          <h2
+            class="text-success item-name"
+            style="font-size:large; font=weight: 700;"
+          >{{this.name}}</h2>
+          <div
+            class="text-success item-price"
+            style="font-size:large; font=weight: 700;"
+          >${{this.price}}</div>
+          <a class="btn addbtn">
+            <span class="hide-cart"><i
+                class="fa-solid fa-cart-shopping nav-cart"
+              ></i></span>
+            Add to Cart</a>
+        </div>
+      {{/if}}
     {{/each}}
   </div>
 </div>

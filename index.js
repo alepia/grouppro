@@ -9,8 +9,12 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
+const EcommerceRouter = require("./router/ecommerceRouter");
+const EcommerceService = require("./service/ecommerceService");
+const products = require("./public/js/products");
 require("dotenv").config();
 
+const ecommerceService = new EcommerceService(knex);
 //port
 const port = 8080;
 
@@ -37,6 +41,17 @@ app.use(express.static("public"));
 //Set up passportJS
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Middleware to check if the user is authenticated
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect("/login");
+}
+
+function notLoggedIn(req, res, next) {
+  if (!req.isAuthenticated()) return next();
+  res.redirect("/");
+}
 
 //Set up Local Strategy
 //SignUp
@@ -112,26 +127,34 @@ passport.deserializeUser(async (id, done) => {
 });
 
 //Render
-const products = require("./public/js/products");
+app.use(
+  "/api/products",
+  new EcommerceRouter(express, ecommerceService).router()
+);
+
 app.get("/", (req, res) => {
-  res.render("home", {
-    title: "Home",
-    style: "styles.css",
-    products: products,
+  ecommerceService.list().then((data) => {
+    res.render("home", {
+      title: "Home",
+      style: "styles.css",
+      homepro: data,
+    });
   });
 });
 
-// Products page
+// // Products page
 app.get("/shop", (req, res) => {
-  res.render("products", {
-    title: "Shop",
-    style: "styles.css",
-    products: products,
+  ecommerceService.list().then((data) => {
+    res.render("products", {
+      title: "Shop",
+      style: "styles.css",
+      products: data,
+    });
   });
 });
-// products end
+// // products end
 
-// single product
+// // single product
 app.get("/sproduct", (req, res) => {
   itemImage = [];
   itemSecondImage = [];
@@ -161,22 +184,23 @@ app.get("/sproduct", (req, res) => {
     itemSecondImage: itemSecondImage,
   });
 });
+// singleproduct end
 
-app.get("/login", (req, res) => {
+app.get("/login", notLoggedIn, (req, res) => {
   res.render("login", {
     title: "Login",
     style: "styles.css",
   });
 });
 
-app.get("/signup", (req, res) => {
+app.get("/signup", notLoggedIn, (req, res) => {
   res.render("signup", {
     title: "SignUp",
     style: "styles.css",
   });
 });
 
-app.get("/account", (req, res) => {
+app.get("/account", isLoggedIn, (req, res) => {
   res.render("userpage", {
     title: "My Account",
     style: "styles.css",
@@ -196,7 +220,7 @@ app.post(
   "/signup",
   passport.authenticate("local-signup", {
     successRedirect: "/login",
-    failureRedirect: "/login",
+    failureRedirect: "/signup",
     failureFlash: true,
   })
 );

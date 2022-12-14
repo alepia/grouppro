@@ -49,16 +49,6 @@ const products = [
     type: "womens",
     discount: false,
   },
-  {
-    id: 6,
-    name: "Sample 6",
-    price: 100,
-    instock: 31,
-    description: "lorem ipsum dolor sit amet",
-    imgSrc: "img/thumbnail1.png",
-    type: "womens",
-    discount: false,
-  },
 ];
 
 module.exports = products;

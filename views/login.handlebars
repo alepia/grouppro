@@ -1,5 +1,7 @@
-<div>
-  <div>
+<div class="flex-container-login">
+
+  {{! Login }}
+  <div class="flex-child-login">
     <h2>Login</h2><br />
     <form action="/login" method="post" id="login-form">
       <label for="email">Email:</label><br />
@@ -19,11 +21,13 @@
         placeholder="enter your password"
         value=""
       />
+      <br /><br />
       {{#if error}}
         <p>{{error}}</p>
       {{/if}}
       <button type="submit" class="submit-button">Submit</button>
       <button type="reset" class="reset-button">Reset</button>
     </form><br />
+    <a href="/signup">>>Register<<</a>
   </div>
 </div>

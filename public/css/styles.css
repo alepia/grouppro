@@ -52,8 +52,8 @@ body,
 }
 
 .banner-btn {
-  position: relative;
-  top: 220;
+  position: absolute;
+  top: 250;
   left: 570;
   background-color: rgba(255, 255, 255, 0.2);
   color: #cb3532;
