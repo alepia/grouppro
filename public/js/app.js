@@ -27,7 +27,7 @@ function ready() {
 
 function removeCartItem(event) {
   var buttonClicked = event.target;
-  buttonClicked.parentElement.parentElement.remove();
+  buttonClicked.parentElement.parentElement.parentElement.remove();
   updateCartTotal();
 }
 
@@ -76,3 +76,7 @@ function updateCartTotal() {
   document.getElementsByClassName("cart-total-price")[0].innerText =
     "$" + total;
 }
+
+$(".product-row").on("click", ".addbtn", async (event) => {
+  await axios.post("/api/products/cart",{product_id: event.target.id});
+})

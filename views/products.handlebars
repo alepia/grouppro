@@ -2,19 +2,25 @@
 <div class="sep"></div>
 <div class="container-fluid filtcont">
   <nav class="navbar navbar-dark">
-    <a href="" class="nav-link filt">Filters</a>
+    <a class="nav-link filt">Filters</a>
+    <div class="container">
+      <div>
+        <select name="filters" id="filters">
+          <option value="none">Filter</option>
+          <option value="men">Mens</option>
+          <option value="women">Womens</option>
+          <option value="kids">Kids</option>
+        </select>
+      </div>
+    </div>
   </nav>
 </div>
 {{! end }}
 <div class="container-fluid productscont">
-  <div class="row">
+  <div class="row product-row">
     {{#each products}}
-      <div class="col-lg-2 col-md-3 col-sm-1 transition">
-        <a href="/sproduct"><img
-            src="{{this.img_src}}"
-            alt=""
-            class="prothumb item-image"
-          /></a>
+      <div class="col-lg-2 col-md-3 col-sm-1 transition border-test">
+        <img src="{{this.img_src}}" alt="" class="prothumb item-image" />
         <h2
           class="text-succes item-title"
           style="font-size:large; font=weight: 700;"
@@ -23,7 +29,7 @@
           class="text-succes item-price"
           style="font-size:large; font=weight: 700;"
         >${{this.price}}</div>
-        <div class="btn addbtn">
+        <div class="btn addbtn"  id={{this.id}}>
           <span class="hide-cart"><i
               class="fa-solid fa-cart-shopping nav-cart"
             ></i></span>

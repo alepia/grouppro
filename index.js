@@ -21,6 +21,7 @@ const port = 8080;
 // Express middleware set up
 const app = express();
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(
   session({
@@ -89,25 +90,15 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
-      //Check if the user exists in the database
-      const user = await knex("users").where({ email }).first(); // {id: 1, email: a@a, password: 2@10.....}
+      const user = await knex("users").where({ email }).first();
 
       if (!user) {
-        //if user does not exists then don't authenticate the user
         return done(null, false, {
           message: "User does not exist in the database",
         });
       }
-      //hasing the entered password and comaring with the hash password from the database
       const result = await bcrypt.compare(password, user.password);
-      //1st Way
-      // if (result) {
-      //   return done(null, user);
-      // } else {
-      //   return done(null, false);
-      // }
-
-      //2nd Way
+      console.log("login", user);
       return result
         ? done(null, user)
         : done(null, false, { message: "Incorrect Password" });
@@ -123,7 +114,7 @@ passport.serializeUser((user, done) => {
 //Deserialize
 passport.deserializeUser(async (id, done) => {
   const user = await knex("users").where({ id }).first();
-  return user ? done(null, true) : done(null, false);
+  return user ? done(null, user) : done(null, false);
 });
 
 //Render
@@ -131,6 +122,12 @@ app.use(
   "/api/products",
   new EcommerceRouter(express, ecommerceService).router()
 );
+
+app.get("/test", (req, res) => {
+  ecommerceService.userName().then((data) => {
+    res.json(data);
+  });
+});
 
 app.get("/", (req, res) => {
   ecommerceService.list().then((data) => {
@@ -154,38 +151,6 @@ app.get("/shop", (req, res) => {
 });
 // // products end
 
-// // single product
-app.get("/sproduct", (req, res) => {
-  itemImage = [];
-  itemSecondImage = [];
-  itemDescription = [];
-  itemDescription.push({
-    name: "Sample 6",
-    price: 100,
-    desc: "Lorem ipsum dolor sit am",
-  });
-  itemImage.push({
-    src: "img/thumbnail1.png",
-  });
-  itemImage.push({
-    src: "img/thumbnail2.png",
-  });
-  itemSecondImage.push({
-    src: "img/thumbnail3.png",
-  });
-  itemSecondImage.push({
-    src: "img/thumbnail4.png",
-  });
-  res.render("single_product", {
-    title: "Product",
-    style: "styles.css",
-    itemImage: itemImage,
-    itemDescription: itemDescription,
-    itemSecondImage: itemSecondImage,
-  });
-});
-// singleproduct end
-
 app.get("/login", notLoggedIn, (req, res) => {
   res.render("login", {
     title: "Login",
@@ -201,25 +166,38 @@ app.get("/signup", notLoggedIn, (req, res) => {
 });
 
 app.get("/account", isLoggedIn, (req, res) => {
-  res.render("userpage", {
-    title: "My Account",
+  ecommerceService.userName().then((data) => {
+    res.render("account", {
+      title: "Account",
+      style: "styles.css",
+      user: data,
+    });
+  });
+});
+
+app.get("/checkout", isLoggedIn, (req, res) => {
+  ecommerceService.getCart().then((data) => {
+    res.render("checkout", {
+      title: "Checkout",
+      style: "styles.css",
+      carro: data,
+    });
+  });
+});
+
+app.get("/checkout", notLoggedIn, (req, res) => {
+  res.render("login", {
+    title: "Login",
     style: "styles.css",
   });
 });
 
-app.get("/checkout", (req, res) => {
-  res.render("checkout", {
-    title: "Checkout",
-    style: "styles.css",
-  });
-});
-
-//Handle Local Login
+//Handle Local Login/Signup
 //Signup Request
 app.post(
   "/signup",
   passport.authenticate("local-signup", {
-    successRedirect: "/login",
+    successRedirect: "/account",
     failureRedirect: "/signup",
     failureFlash: true,
   })
@@ -229,7 +207,7 @@ app.post(
 app.post(
   "/login",
   passport.authenticate("local-login", {
-    successRedirect: "/",
+    successRedirect: "/account",
     failureRedirect: "/login",
     failureFlash: true,
   })

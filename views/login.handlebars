@@ -3,13 +3,15 @@
   {{! Login }}
   <div class="flex-child-login">
     <h2>Login</h2><br />
+    <hr>
+    <br>
     <form action="/login" method="post" id="login-form">
       <label for="email">Email:</label><br />
       <input
         type="text"
         name="email"
         id="email"
-        placeholder="enter your email"
+        placeholder="Email"
         value=""
       /><br />
       <br />
@@ -18,7 +20,7 @@
         type="password"
         name="password"
         id="password"
-        placeholder="enter your password"
+        placeholder="Password"
         value=""
       />
       <br /><br />
@@ -26,8 +28,8 @@
         <p>{{error}}</p>
       {{/if}}
       <button type="submit" class="submit-button">Submit</button>
-      <button type="reset" class="reset-button">Reset</button>
-    </form><br />
-    <a href="/signup">>>Register<<</a>
+      <button type="reset" class="reset-button">Reset</button><br><br>
+      <a href="/signup" class="text-success">Register</a>
+    </form>
   </div>
 </div>
